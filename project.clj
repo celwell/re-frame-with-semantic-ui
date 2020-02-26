@@ -9,7 +9,9 @@
                  [re-frame "0.11.0"]]
 
   :plugins [[cider/cider-nrepl "0.24.0"]
-            [lein-shell "0.5.0"]]
+            [lein-jsass "0.2.1"]
+            [lein-shell "0.5.0"]
+            [lein-pdo "0.1.1"]]
 
   :min-lein-version "2.5.3"
 
@@ -18,6 +20,9 @@
   :source-paths ["src/clj" "src/cljs"]
 
   :test-paths   ["test/cljs"]
+  
+  :jsass {:source "src/scss"
+          :target "resources/public/css"}
 
   :clean-targets ^{:protect false} ["resources/public/js/compiled" "target"
                                     "test/js"]
@@ -27,9 +32,11 @@
                              :macosx  "open"
                              :linux   "xdg-open"}}}
 
-  :aliases {"dev"          ["with-profile" "dev" "do"
-                            ["run" "-m" "shadow.cljs.devtools.cli" "watch" "app"]]
+  :aliases {"dev"          ["with-profile" "dev" "pdo"
+                            ["run" "-m" "shadow.cljs.devtools.cli" "watch" "app"]
+                            ["jsass" "auto"]]
             "prod"         ["with-profile" "prod" "do"
+                            ["jsass" "once"]
                             ["run" "-m" "shadow.cljs.devtools.cli" "release" "app"]]
             "build-report" ["with-profile" "prod" "do"
                             ["run" "-m" "shadow.cljs.devtools.cli" "run" "shadow.cljs.build-report" "app" "target/build-report.html"]
